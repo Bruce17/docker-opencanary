@@ -29,9 +29,13 @@ jobs:
           sudo apt install -y qemu qemu-user-static qemu-user binfmt-support
 
       - name: Build image
+        env:
+          REPOSITORY: ${{ secrets.DOCKER_HUB_REPOSITORY }}
         run: make build
 
       - name: Publish image
+        env:
+          REPOSITORY: ${{ secrets.DOCKER_HUB_REPOSITORY }}
         run: make publish latest
 
       - name: Docker Hub Description
