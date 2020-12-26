@@ -5,6 +5,14 @@
 
 ## Build
 
+Trigger a build:
+
 ```
-$ docker build -t sometag -f Dockerfile .
+$ docker build -t sometag -f Dockerfile --build-arg VERSION=0.5.6 .
+```
+
+Build multi arch (e.g. in CI):
+
+```
+make build
 ```
