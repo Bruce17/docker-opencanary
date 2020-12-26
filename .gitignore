@@ -1,0 +1,6 @@
+# Build files
+.pip.conf
+!pip.conf.dist
+
+# Temp files
+.tmp
