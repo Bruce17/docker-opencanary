@@ -1,23 +1,23 @@
-image: hansdampf17/opencanary:$FULLVERSION
+image: $REPOSITORY:$FULLVERSION
 manifests:
-  - image: hansdampf17/opencanary:$VERSION-arm32v6
+  - image: $REPOSITORY:$VERSION-arm32v6
     platform:
       architecture: arm
       variant: v6
       os: linux
   -
-    image: hansdampf17/opencanary:$VERSION-armhf
+    image: $REPOSITORY:$VERSION-armhf
     platform:
       architecture: arm
       variant: v7
       os: linux
   -
-    image: hansdampf17/opencanary:$VERSION-arm64v8
+    image: $REPOSITORY:$VERSION-arm64v8
     platform:
       architecture: arm64
       os: linux
   -
-    image: hansdampf17/opencanary:$VERSION-amd64
+    image: $REPOSITORY:$VERSION-amd64
     platform:
       architecture: amd64
       os: linux

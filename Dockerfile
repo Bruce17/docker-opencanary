@@ -1,5 +1,7 @@
 FROM python:3-alpine
 
+ARG VERSION
+
 RUN mkdir -p /opt/opencanary /opt/opencanary/scripts && \
     apk update && \
     apk add --no-cache bash sudo openssl libffi libpcap && \
@@ -14,7 +16,7 @@ RUN mkdir -p /opt/opencanary /opt/opencanary/scripts && \
     # Avoid error "cannot import name 'Feature' from 'setuptools'" caused by setuptools, see: https://github.com/pypa/setuptools/issues/2017#issuecomment-605354361
     pip install setuptools==45 && \
     # Install OpenCanary and tools
-    pip install opencanary && \
+    pip install opencanary==${VERSION} && \
     pip install scapy pcapy && \
     # Install RDP
     pip install rdpy && \
