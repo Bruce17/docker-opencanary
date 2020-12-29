@@ -33,8 +33,13 @@ jobs:
         run: |
           # Actually do not install the package, just search for all available versions
           pkg_versions=`pip install ${PY_PACKAGE_NAME}== 2>&1`
+          echo "pkg_versions: \"$pkg_versions\""
+
           available_versions=($(echo "$pkg_versions" | grep "from versions" | sed "s/.*(from versions:\(.*\))/\1/" | sed -e 's/^[ \t]*//' | tr ", " "\n"))
+          echo "available_versions: \"$available_versions\""
+
           latest_version=${available_versions[-1]}
+          echo "latest_version: \"$latest_version\""
 
           echo "latest version: $latest_version"
 
