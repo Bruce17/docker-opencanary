@@ -27,6 +27,9 @@ jobs:
           python-version: 3.x
 
       - name: Get latest version for "$PY_PACKAGE_NAME"
+        # Disable fail fast on bash shell.
+        # See: https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#exit-codes-and-error-action-preference
+        shell: bash {0}
         run: |
           # Actually do not install the package, just search for all available versions
           pkg_versions=`pip install ${PY_PACKAGE_NAME}== 2>&1`
