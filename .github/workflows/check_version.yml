@@ -26,21 +26,14 @@ jobs:
         with:
           python-version: 3.x
 
-      - name: Get latest version for "$PY_PACKAGE_NAME"
+      - name: Get latest package version
         # Disable fail fast on bash shell.
         # See: https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#exit-codes-and-error-action-preference
         shell: bash {0}
         run: |
-          # Actually do not install the package, just search for all available versions
-          pkg_versions=`pip install ${PY_PACKAGE_NAME}== 2>&1`
-          echo "pkg_versions: \"$pkg_versions\""
+          pip install yolk3k
 
-          available_versions=($(echo "$pkg_versions" | grep "from versions" | sed "s/.*(from versions:\(.*\))/\1/" | sed -e 's/^[ \t]*//' | tr ", " "\n"))
-          echo "available_versions: \"$available_versions\""
-
-          latest_version=${available_versions[-1]}
-          echo "latest_version: \"$latest_version\""
-
+          latest_version=`yolk -V $PY_PACKAGE_NAME | sed "s/$PY_PACKAGE_NAME\s*\(.*\)/\1/"`
           echo "latest version: $latest_version"
 
           # Set output parameters.
