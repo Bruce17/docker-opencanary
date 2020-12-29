@@ -1,4 +1,4 @@
-VERSION ?= 0.5.6
+VERSION ?= 0.5.5
 CACHE ?= --no-cache=1
 FULLVERSION ?= ${VERSION}
 REPOSITORY ?= undef
