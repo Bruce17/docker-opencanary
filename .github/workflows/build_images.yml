@@ -80,8 +80,8 @@ jobs:
           # TODO: disabled only for debugging
           # platforms: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
           # platforms: linux/amd64
-          platforms: linux/arm64
-          # platforms: linux/arm/v6
+          # platforms: linux/arm64
+          platforms: linux/arm/v6
           # platforms: linux/arm/v7
           # TODO: disabled only for debugging
           # push: ${{ github.event_name != 'pull_request' }}
