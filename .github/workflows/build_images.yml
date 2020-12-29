@@ -61,29 +61,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      # TODO: disabled only for debugging
-      # - name: Login to DockerHub
-      #   if: github.event_name != 'pull_request'
-      #   uses: docker/login-action@v1
-      #   with:
-      #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
-      #     password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Login to DockerHub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Build and Push
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          # TODO: disabled only for debugging
-          # file: ./Dockerfile
-          file: ./Dockerfile.debug
-          # TODO: disabled only for debugging
-          # platforms: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
-          # platforms: linux/amd64,linux/arm/v6,linux/arm/v7
-          platforms: linux/arm64
-          # TODO: disabled only for debugging
-          # push: ${{ github.event_name != 'pull_request' }}
-          push: false
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
