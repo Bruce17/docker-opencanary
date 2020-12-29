@@ -1,0 +1,43 @@
+---
+name: 'check python package'
+
+on:
+  # FIXME: only disable for testing purposes
+  # schedule:
+  #   - cron: "0 0 * * 0"
+  push:
+    branches:
+      - '**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    env:
+      PY_PACKAGE_NAME: opencanary
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Get latest version for "$PY_PACKAGE_NAME"
+        run: |
+          # Actually do not install the package, just search for all available versions
+          pkg_versions=`pip install ${PY_PACKAGE_NAME}== 2>&1`
+          available_versions=($(echo "$pkg_versions" | grep "from versions" | sed "s/.*(from versions:\(.*\))/\1/" | sed -e 's/^[ \t]*//' | tr ", " "\n"))
+          latest_version=${available_versions[-1]}
+
+          echo "latest version: $latest_version"
+
+          # Set output parameters.
+          echo ::set-output name=latest_version::${latest_version}
+
+      - name: Get previous tag
+        id: previoustag
+        uses: WyriHaximus/github-action-get-previous-tag@1.0.0
