@@ -4,11 +4,11 @@ ARG VERSION
 
 RUN mkdir -p /opt/opencanary /opt/opencanary/scripts
 RUN apk update
-RUN apk add --no-cache bash sudo openssl libffi libpcap
+RUN apk add --verbose --no-cache bash sudo openssl libffi libpcap
 # Add build dependencies
-RUN apk add --no-cache gcc g++
+RUN apk add --verbose --no-cache gcc g++
 # Add build dependencies which can be removed later
-RUN apk add --no-cache --virtual .build-deps  python3-dev libffi-dev musl-dev openssl-dev libpcap-dev
+RUN apk add --verbose --no-cache --virtual .build-deps  python3-dev libffi-dev musl-dev openssl-dev libpcap-dev
 # Prepare virtualenv
 RUN pip install virtualenv
 RUN virtualenv /opt/opencanary/virtualenv/
