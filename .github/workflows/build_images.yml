@@ -38,17 +38,12 @@ jobs:
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
 
-      - name: Docker Image
-        run: echo ${{ steps.prep.outputs.docker_image }}
-
-      - name: Available tags
-        run: echo ${{ steps.prep.outputs.tags }}
-
       - name: Set up QEMU
         id: qemu
         uses: docker/setup-qemu-action@master
         with:
-          platforms: all
+          # platforms: all
+          platforms: amd64,arm
 
       - name: Available platforms
         run: echo ${{ steps.qemu.outputs.platforms }}
