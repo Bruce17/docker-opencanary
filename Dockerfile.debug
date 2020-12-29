@@ -5,11 +5,11 @@ ARG VERSION
 RUN mkdir -p /opt/opencanary /opt/opencanary/scripts
 RUN apk update
 # There is an error in bash.post-install script for arm64 on Alpine
-RUN apk add --verbose --no-cache bash sudo openssl libffi libpcap || true
+RUN apk add --verbose --no-cache bash sudo openssl libffi libpcap
 # Add build dependencies
-RUN apk add --verbose --no-cache gcc g++ || true
+RUN apk add --verbose --no-cache gcc g++
 # Add build dependencies which can be removed later
-RUN apk add --verbose --no-cache --virtual .build-deps  python3-dev libffi-dev musl-dev openssl-dev libpcap-dev || true
+RUN apk add --verbose --no-cache --virtual .build-deps  python3-dev libffi-dev musl-dev openssl-dev libpcap-dev
 # Prepare virtualenv
 RUN pip install virtualenv
 RUN virtualenv /opt/opencanary/virtualenv/
