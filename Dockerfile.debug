@@ -6,7 +6,7 @@ RUN mkdir -p /opt/opencanary /opt/opencanary/scripts
 RUN apk update
 # There is an error in bash.post-install script for arm64 on Alpine
 RUN apk add --verbose --no-cache bash || true
-RUN apk add --verbose --no-cache sudo openssl libffi libpcap
+RUN apk add --verbose --no-cache sudo openssl libffi libpcap || true
 # Add build dependencies
 RUN apk add --verbose --no-cache gcc g++
 # Add build dependencies which can be removed later
