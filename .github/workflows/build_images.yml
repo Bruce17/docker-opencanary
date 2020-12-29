@@ -74,7 +74,9 @@ jobs:
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          file: ./Dockerfile
+          # TODO: disabled only for debugging
+          # file: ./Dockerfile
+          file: ./Dockerfile.debug
           platforms: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
           # TODO: disabled only for debugging
           # push: ${{ github.event_name != 'pull_request' }}
