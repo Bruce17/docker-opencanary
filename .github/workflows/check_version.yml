@@ -43,10 +43,12 @@ jobs:
       - name: Create new release
         uses: actions/create-release@v1
         if: steps.pkg_version.outputs.latestVersion != steps.previoustag.outputs.tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.pkg_version.outputs.latestVersion }}
           release_name: Release v${{ steps.pkg_version.outputs.latestVersion }}
           body: |
             Automatically created release by GitHub Action
-          draft: false
+          draft: true
           prerelease: false
