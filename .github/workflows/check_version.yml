@@ -34,6 +34,7 @@ jobs:
           language: python
           conditions: |
             pythonVersion: py3
+            requiresPython: 3.x
 
       - name: Get previous tag
         id: previoustag
