@@ -1,7 +1,7 @@
 # Docker image for [OpenCanary](https://github.com/thinkst/opencanary)
 
 <p align="center">
-  <a href="https://github.com/bruce17/ghaction-package-latest-version/releases/latest"><img alt="package-latest-version release" src="https://img.shields.io/github/release/bruce17/ghaction-package-latest-version.svg?style=flat"></a>
+  <a href="https://github.com/bruce17/docker-opencanary/releases/latest"><img alt="package-latest-version release" src="https://img.shields.io/github/release/bruce17/docker-opencanary.svg?style=flat"></a>
   <a href="https://github.com/Bruce17/docker-opencanary/actions?query=workflow%3A%22build+images%22"><img alt="GitHub Workflow Status (branch)" src="https://img.shields.io/github/workflow/status/Bruce17/docker-opencanary/build%20images/main?label=build%20images&logo=github"></a>
   <a href="https://github.com/Bruce17/docker-opencanary/actions?query=workflow%3A%22check+python+package%22"><img alt="GitHub Workflow Status (branch)" src="https://img.shields.io/github/workflow/status/Bruce17/docker-opencanary/check%20python%20package/main?label=check%20package%20status&logo=github"></a>
 </p>
