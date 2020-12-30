@@ -40,7 +40,15 @@ jobs:
         id: previoustag
         uses: WyriHaximus/github-action-get-previous-tag@1.0.0
 
-      - name: Create new release
+      - name: Create a new tag
+        uses: negz/create-tag@v1
+        if: steps.pkg_version.outputs.latestVersion != steps.previoustag.outputs.tag
+        with:
+          version: v${{ steps.pkg_version.outputs.latestVersion }}
+          message: ''
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create new release for the new tag
         uses: actions/create-release@v1
         if: steps.pkg_version.outputs.latestVersion != steps.previoustag.outputs.tag
         env:
