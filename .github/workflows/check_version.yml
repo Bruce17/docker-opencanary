@@ -1,0 +1,58 @@
+---
+name: 'check python package'
+
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    env:
+      PY_PACKAGE_NAME: opencanary
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Get latest package version
+        uses: Bruce17/ghaction-package-latest-version@v1
+        id: pkg_version
+        with:
+          package: ${{ env.PY_PACKAGE_NAME }}
+          language: python
+          conditions: |
+            pythonVersion: py3
+            requiresPython: 3.7
+
+      - name: Get previous tag
+        id: previoustag
+        uses: WyriHaximus/github-action-get-previous-tag@1.0.0
+
+      - name: Create a new tag
+        uses: negz/create-tag@v1
+        if: steps.pkg_version.outputs.latestVersion != steps.previoustag.outputs.tag
+        with:
+          version: v${{ steps.pkg_version.outputs.latestVersion }}
+          message: ''
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create new release for the new tag
+        uses: actions/create-release@v1
+        if: steps.pkg_version.outputs.latestVersion != steps.previoustag.outputs.tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.pkg_version.outputs.latestVersion }}
+          release_name: Release v${{ steps.pkg_version.outputs.latestVersion }}
+          body: |
+            Automatically created release by GitHub Action
+          draft: true
+          prerelease: false
