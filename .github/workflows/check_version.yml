@@ -27,17 +27,13 @@ jobs:
           python-version: 3.x
 
       - name: Get latest package version
-        # Disable fail fast on bash shell.
-        # See: https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#exit-codes-and-error-action-preference
-        shell: bash {0}
-        run: |
-          pip install yolk3k
-
-          latest_version=`yolk -V $PY_PACKAGE_NAME | sed "s/$PY_PACKAGE_NAME\s*\(.*\)/\1/"`
-          echo "latest version: $latest_version"
-
-          # Set output parameters.
-          echo ::set-output name=latest_version::${latest_version}
+        uses: bruce17/package-latest-version@v1
+        id: pkg_version
+        with:
+          package: $PY_PACKAGE_NAME
+          language: python
+          conditions: |
+            pythonVersion: py3
 
       - name: Get previous tag
         id: previoustag
