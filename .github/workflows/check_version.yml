@@ -2,12 +2,8 @@
 name: 'check python package'
 
 on:
-  # FIXME: only disable for testing purposes
-  # schedule:
-  #   - cron: "0 0 * * 0"
-  push:
-    branches:
-      - '**'
+  schedule:
+    - cron: "0 0 * * 0"
 
 jobs:
   check:
