@@ -30,7 +30,7 @@ jobs:
         uses: Bruce17/ghaction-package-latest-version@v1
         id: pkg_version
         with:
-          package: $PY_PACKAGE_NAME
+          package: ${{ env.PY_PACKAGE_NAME }}
           language: python
           conditions: |
             pythonVersion: py3
