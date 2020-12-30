@@ -27,7 +27,7 @@ jobs:
           python-version: 3.x
 
       - name: Get latest package version
-        uses: bruce17/package-latest-version@v1
+        uses: Bruce17/ghaction-package-latest-version@v1
         id: pkg_version
         with:
           package: $PY_PACKAGE_NAME
