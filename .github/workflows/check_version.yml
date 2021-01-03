@@ -4,6 +4,10 @@ name: 'check python package'
 on:
   schedule:
     - cron: "0 0 * * 0"
+  # Only for testing/debugging
+  # push:
+  #   branches:
+  #     - 'feature/*'
 
 jobs:
   check:
@@ -24,7 +28,7 @@ jobs:
 
       - name: Get latest package version
         uses: Bruce17/ghaction-package-latest-version@v1
-        id: pkg_version
+        id: packageVersion
         with:
           package: ${{ env.PY_PACKAGE_NAME }}
           language: python
@@ -36,22 +40,39 @@ jobs:
         id: previoustag
         uses: WyriHaximus/github-action-get-previous-tag@1.0.0
 
+      - name: Compare latest and tag version
+        id: comparVersions
+        shell: bash
+        run: |
+          unset CREATE_TAG
+          if [ "v${latest_version}" != "${previous_tag}" ] && [ "${latest_version}" != "${previous_tag}" ]; then
+            echo "create tag!"
+            CREATE_TAG="true"
+          else
+            echo "nothing to do"
+          fi
+
+          echo ::set-output name=hasNewVersion::${CREATE_TAG}
+        env:
+          latest_version: ${{ steps.packageVersion.outputs.latestVersion }}
+          previous_tag: ${{ steps.previoustag.outputs.tag }}
+
       - name: Create a new tag
         uses: negz/create-tag@v1
-        if: steps.pkg_version.outputs.latestVersion != steps.previoustag.outputs.tag
+        if: steps.comparVersions.outputs.hasNewVersion == 'true'
         with:
-          version: v${{ steps.pkg_version.outputs.latestVersion }}
+          version: v${{ steps.packageVersion.outputs.latestVersion }}
           message: ''
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create new release for the new tag
         uses: actions/create-release@v1
-        if: steps.pkg_version.outputs.latestVersion != steps.previoustag.outputs.tag
+        if: steps.comparVersions.outputs.hasNewVersion == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.pkg_version.outputs.latestVersion }}
-          release_name: Release v${{ steps.pkg_version.outputs.latestVersion }}
+          tag_name: v${{ steps.packageVersion.outputs.latestVersion }}
+          release_name: Release v${{ steps.packageVersion.outputs.latestVersion }}
           body: |
             Automatically created release by GitHub Action
           draft: true
