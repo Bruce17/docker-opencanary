@@ -2,12 +2,12 @@
 name: 'check python package'
 
 on:
-  # FIXME: disabled for debugging
-  # schedule:
-  #   - cron: "0 0 * * 0"
-  push:
-    branches:
-      - 'feature/*'
+  schedule:
+    - cron: "0 0 * * 0"
+  # Only for testing/debugging
+  # push:
+  #   branches:
+  #     - 'feature/*'
 
 jobs:
   check:
@@ -42,18 +42,8 @@ jobs:
 
       - name: Compare latest and tag version
         id: comparVersions
-        shell: 'bash {0}'
+        shell: bash
         run: |
-          echo "latest_version: \"${latest_version}\""
-          echo "previous_tag: \"${previous_tag}\""
-
-          echo "opposite test:"
-          if [ "v${latest_version}" = "${previous_tag}" ] || [ "${latest_version}" = "${previous_tag}" ]; then
-            echo "match!"
-          else
-            echo "no match ...."
-          fi
-
           unset CREATE_TAG
           if [ "v${latest_version}" != "${previous_tag}" ] && [ "${latest_version}" != "${previous_tag}" ]; then
             echo "create tag!"
