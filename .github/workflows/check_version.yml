@@ -44,13 +44,16 @@ jobs:
         id: comparVersions
         shell: 'bash {0}'
         run: |
+          echo "env:"
+          env
+
           unset CREATE_TAG
           if [ "v${INPUT_LATEST_VERSION}" != "${INPUT_PREVIOUS_TAG}" ] && [ "${INPUT_LATEST_VERSION}" != "${INPUT_PREVIOUS_TAG}" ]; then
             CREATE_TAG="true"
           fi
 
           echo ::set-output name=hasNewVersion::${CREATE_TAG}
-        with:
+        env:
           latest_version: ${{ steps.packageVersion.outputs.latestVersion }}
           previous_tag: ${{ steps.previoustag.outputs.tag }}
 
