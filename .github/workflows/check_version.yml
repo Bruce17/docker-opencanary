@@ -44,12 +44,15 @@ jobs:
         id: comparVersions
         shell: 'bash {0}'
         run: |
-          echo "env:"
-          env
+          echo "latest_version: \"${latest_version}\""
+          echo "previous_tag: \"${previous_tag}\""
 
           unset CREATE_TAG
-          if [ "v${INPUT_LATEST_VERSION}" != "${INPUT_PREVIOUS_TAG}" ] && [ "${INPUT_LATEST_VERSION}" != "${INPUT_PREVIOUS_TAG}" ]; then
+          if [ "v${latest_version}" != "${previous_tag}" ] && [ "${latest_version}" != "${previous_tag}" ]; then
+            echo "create tag!"
             CREATE_TAG="true"
+          else
+            echo "nothing to do"
           fi
 
           echo ::set-output name=hasNewVersion::${CREATE_TAG}
