@@ -47,6 +47,13 @@ jobs:
           echo "latest_version: \"${latest_version}\""
           echo "previous_tag: \"${previous_tag}\""
 
+          echo "opposite test:"
+          if [ "v${latest_version}" = "${previous_tag}" ] || [ "${latest_version}" = "${previous_tag}" ]; then
+            echo "match!"
+          else
+            echo "no match ...."
+          fi
+
           unset CREATE_TAG
           if [ "v${latest_version}" != "${previous_tag}" ] && [ "${latest_version}" != "${previous_tag}" ]; then
             echo "create tag!"
