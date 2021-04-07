@@ -2,6 +2,10 @@ FROM python:3-alpine
 
 ARG VERSION
 
+# Error building cryptography:
+# "[...] 5) If you are experiencing issues with Rust for *this release only* you may set the environment variable `CRYPTOGRAPHY_DONT_BUILD_RUST=1`."
+ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
+
 RUN mkdir -p /opt/opencanary /opt/opencanary/scripts && \
     apk update && \
     apk add --no-cache bash sudo openssl libffi libpcap && \
@@ -9,6 +13,8 @@ RUN mkdir -p /opt/opencanary /opt/opencanary/scripts && \
     apk add --no-cache gcc g++ && \
     # Add build dependencies which can be removed later
     apk add --no-cache --virtual .build-deps  python3-dev libffi-dev musl-dev openssl-dev libpcap-dev && \
+    # Upgrade pip first
+    pip install --upgrade pip && \
     # Prepare virtualenv
     pip install virtualenv && \
     virtualenv /opt/opencanary/virtualenv/ && \

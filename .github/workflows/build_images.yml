@@ -5,10 +5,10 @@ on:
   push:
     branches:
       # FIXME: only disable for testing purposes
-      # - '**'
-      - 'main'
+      - '**'
+      # - 'main'
     tags:
-      - 'v*'
+      - v*
 
 jobs:
   docker:
@@ -16,11 +16,14 @@ jobs:
     
     env:
       # Fallback version for builds
-      BUILD_VERSION: 0.5.5
+      BUILD_VERSION: "0.5.5"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          # Get all history including tags
+          fetch-depth: 0
 
       - name: Prepare OpenCanary build version
         id: prep
@@ -31,6 +34,14 @@ jobs:
           # If this is git tag, use the tag name
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             PREPARED_BUILD_VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            GIT_LATEST_TAG_REF=$(git rev-list --tags --max-count=1)
+
+            # Check if there is latest tag set
+            if [[ -n "$GIT_LATEST_TAG_REF" ]]; then
+              GIT_LATEST_TAG=$(git describe --tags $GIT_LATEST_TAG_REF)
+              PREPARED_BUILD_VERSION=${GIT_LATEST_TAG#v}
+            fi
           fi
 
           # If this is git branch, use the branch name
@@ -42,13 +53,22 @@ jobs:
           echo ::set-output name=prepared_build_version::${PREPARED_BUILD_VERSION}
           echo ::set-output name=current_branch::${CURRENT_BRANCH}
 
+      - name: Current branch
+        run: echo ${{ steps.prep.outputs.current_branch }}
+
+      - name: Current build version
+        run: echo ${{ steps.prep.outputs.prepared_build_version }}
+
       - name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
+        uses: crazy-max/ghaction-docker-meta@v2
         with:
           images: ${{ secrets.DOCKER_HUB_REPOSITORY }}
-          tag-semver: |
-            {{major}}.{{minor}}.{{patch}}
+          tags: |
+            type=sha
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}}
 
       - name: Set up QEMU
         id: qemu
