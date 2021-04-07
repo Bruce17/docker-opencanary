@@ -44,11 +44,13 @@ jobs:
 
       - name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
+        uses: crazy-max/ghaction-docker-meta@v2
         with:
           images: ${{ secrets.DOCKER_HUB_REPOSITORY }}
-          tag-semver: |
-            {{major}}.{{minor}}.{{patch}}
+          tags: |
+            latest=auto
+            type=sha
+            type=semver,pattern={{major}}.{{minor}}.{{patch}}
 
       - name: Set up QEMU
         id: qemu
