@@ -42,13 +42,18 @@ jobs:
           echo ::set-output name=prepared_build_version::${PREPARED_BUILD_VERSION}
           echo ::set-output name=current_branch::${CURRENT_BRANCH}
 
+      - name: Current branch
+        run: echo ${{ steps.prep.outputs.current_branch }}
+
+      - name: Current build version
+        run: echo ${{ steps.prep.outputs.prepared_build_version }}
+
       - name: Docker meta
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v2
         with:
           images: ${{ secrets.DOCKER_HUB_REPOSITORY }}
           tags: |
-            latest=auto
             type=sha
             type=semver,pattern={{major}}.{{minor}}.{{patch}}
 
