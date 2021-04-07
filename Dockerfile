@@ -9,6 +9,8 @@ RUN mkdir -p /opt/opencanary /opt/opencanary/scripts && \
     apk add --no-cache gcc g++ && \
     # Add build dependencies which can be removed later
     apk add --no-cache --virtual .build-deps  python3-dev libffi-dev musl-dev openssl-dev libpcap-dev && \
+    # Upgrade pip first
+    pip install --upgrade pip && \
     # Prepare virtualenv
     pip install virtualenv && \
     virtualenv /opt/opencanary/virtualenv/ && \
