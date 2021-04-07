@@ -5,8 +5,8 @@ on:
   push:
     branches:
       # FIXME: only disable for testing purposes
-      # - '**'
-      - 'main'
+      - '**'
+      # - 'main'
     tags:
       - 'v*'
 
