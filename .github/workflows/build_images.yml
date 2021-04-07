@@ -16,7 +16,7 @@ jobs:
     
     env:
       # Fallback version for builds
-      BUILD_VERSION: 0.5.5
+      BUILD_VERSION: "0.5.5"
 
     steps:
       - name: Checkout
@@ -31,8 +31,11 @@ jobs:
         env:
           previous_tag: ${{ steps.previoustag.outputs.tag }}
         run: |
-          PREPARED_BUILD_VERSION=${env.BUILD_VERSION}
+          PREPARED_BUILD_VERSION=${BUILD_VERSION}
           CURRENT_BRANCH=undef
+
+          # print env for debugging
+          printenv
 
           # If this is git tag, use the tag name
           if [[ $GITHUB_REF == refs/tags/* ]]; then
