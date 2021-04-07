@@ -31,7 +31,7 @@ jobs:
         env:
           previous_tag: ${{ steps.previoustag.outputs.tag }}
         run: |
-          PREPARED_BUILD_VERSION=${BUILD_VERSION}
+          PREPARED_BUILD_VERSION=${env.BUILD_VERSION}
           CURRENT_BRANCH=undef
 
           # If this is git tag, use the tag name
