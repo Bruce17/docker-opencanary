@@ -65,7 +65,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create new release for the new tag
-        uses: actions/create-release@v1
+        uses: actions/create-release@v1.1.4
         if: steps.comparVersions.outputs.hasNewVersion == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
