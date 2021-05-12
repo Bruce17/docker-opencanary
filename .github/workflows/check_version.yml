@@ -57,7 +57,7 @@ jobs:
           previous_tag: ${{ steps.previoustag.outputs.tag }}
 
       - name: Create a new tag
-        uses: negz/create-tag@v1
+        uses: negz/create-tag@v1.0.3
         if: steps.comparVersions.outputs.hasNewVersion == 'true'
         with:
           version: v${{ steps.packageVersion.outputs.latestVersion }}
