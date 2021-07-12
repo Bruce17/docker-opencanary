@@ -5,9 +5,10 @@ on:
   schedule:
     - cron: "0 0 * * 0"
   # Only for testing/debugging
-  # push:
-  #   branches:
-  #     - 'feature/*'
+  # FIXME: remove me after testing
+  push:
+    branches:
+      - 'feature/*'
 
 jobs:
   check:
