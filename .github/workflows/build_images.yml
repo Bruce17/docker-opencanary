@@ -65,7 +65,7 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_HUB_REPOSITORY }}
           tags: |
-            type=shapriority=100
+            type=sha,priority=100
             type=ref,priority=500,event=branch
             type=semver,priority=800,pattern={{version}}
             type=semver,priority=850,pattern={{major}}.{{minor}}
