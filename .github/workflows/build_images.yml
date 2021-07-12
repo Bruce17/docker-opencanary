@@ -4,7 +4,6 @@ name: 'build images'
 on:
   push:
     branches:
-      # FIXME: only disable for testing purposes
       - '**'
       # - 'main'
     tags:
