@@ -37,7 +37,7 @@ jobs:
 
       - name: Get previous tag
         id: previoustag
-        uses: WyriHaximus/github-action-get-previous-tag@v1.0.1
+        uses: WyriHaximus/github-action-get-previous-tag@v1
 
       - name: Compare latest and tag version
         id: comparVersions
@@ -57,7 +57,8 @@ jobs:
           previous_tag: ${{ steps.previoustag.outputs.tag }}
 
       - name: Create a new tag
-        uses: negz/create-tag@v1
+        # uses: negz/create-tag@v1
+        uses: negz/create-tag@v1.0.3
         if: steps.comparVersions.outputs.hasNewVersion == 'true'
         with:
           version: v${{ steps.packageVersion.outputs.latestVersion }}
@@ -65,7 +66,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create new release for the new tag
-        uses: actions/create-release@v1
+        # uses: actions/create-release@v1
+        uses: actions/create-release@v1.1.4
         if: steps.comparVersions.outputs.hasNewVersion == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
