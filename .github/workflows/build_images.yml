@@ -61,21 +61,24 @@ jobs:
 
       - name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v2
+        uses: docker/metadata-action@v3
         with:
           images: ${{ secrets.DOCKER_HUB_REPOSITORY }}
           tags: |
-            type=sha
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}.{{patch}}
+            type=shapriority=100
+            type=ref,priority=500,event=branch
+            type=semver,priority=800,pattern={{version}}
+            type=semver,priority=850,pattern={{major}}.{{minor}}
+            type=semver,priority=900,pattern={{major}}.{{minor}}.{{patch}}
 
       - name: Set up QEMU
         id: qemu
         uses: docker/setup-qemu-action@master
         with:
           # platforms: all
-          platforms: amd64,arm,arm64
+          # platforms: amd64,arm,arm64
+          # FIXME: build only arm64 for faster testing
+          platforms: arm64
 
       - name: Available platforms
         run: echo ${{ steps.qemu.outputs.platforms }}
@@ -85,7 +88,8 @@ jobs:
         uses: docker/setup-buildx-action@master
 
       - name: Cache Docker layers
-        uses: actions/cache@v2.1.4
+        # uses: actions/cache@v2
+        uses: actions/cache@v2.1.6
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
@@ -105,7 +109,9 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
+          # platforms: linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7
+          # FIXME: build only arm64 for faster testing
+          platforms: linux/arm64
           push: ${{ github.event_name != 'pull_request' && steps.prep.outputs.current_branch == 'main' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
