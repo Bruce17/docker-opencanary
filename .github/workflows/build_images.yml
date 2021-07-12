@@ -4,7 +4,6 @@ name: 'build images'
 on:
   push:
     branches:
-      # FIXME: only disable for testing purposes
       - '**'
       # - 'main'
     tags:
@@ -61,14 +60,15 @@ jobs:
 
       - name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v2
+        uses: docker/metadata-action@v3
         with:
           images: ${{ secrets.DOCKER_HUB_REPOSITORY }}
           tags: |
-            type=sha
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}.{{patch}}
+            type=sha,priority=100
+            type=ref,priority=500,event=branch
+            type=semver,priority=800,pattern={{version}}
+            type=semver,priority=850,pattern={{major}}.{{minor}}
+            type=semver,priority=900,pattern={{major}}.{{minor}}.{{patch}}
 
       - name: Set up QEMU
         id: qemu
@@ -76,7 +76,6 @@ jobs:
         with:
           # platforms: all
           platforms: amd64,arm,arm64
-
       - name: Available platforms
         run: echo ${{ steps.qemu.outputs.platforms }}
 
@@ -85,7 +84,7 @@ jobs:
         uses: docker/setup-buildx-action@master
 
       - name: Cache Docker layers
-        uses: actions/cache@v2.1.4
+        uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
